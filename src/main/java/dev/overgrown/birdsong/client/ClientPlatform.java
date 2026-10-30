@@ -1,21 +1,20 @@
 package dev.overgrown.birdsong.client;
 
 import dev.overgrown.birdsong.network.SpeechTriggerC2S;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public final class ClientPlatform {
     private ClientPlatform() {}
 
     public static boolean canSendTrigger() {
-        return ClientPlayNetworking.canSend(SpeechTriggerC2S.CHANNEL);
+        ClientPacketListener connection = Minecraft.getInstance().getConnection();
+        return connection != null && connection.hasChannel(SpeechTriggerC2S.TYPE);
     }
 
     public static void sendTrigger(ResourceLocation power) {
-        FriendlyByteBuf buf = PacketByteBufs.create();
-        new SpeechTriggerC2S(power).write(buf);
-        ClientPlayNetworking.send(SpeechTriggerC2S.CHANNEL, buf);
+        PacketDistributor.sendToServer(new SpeechTriggerC2S(power));
     }
 }

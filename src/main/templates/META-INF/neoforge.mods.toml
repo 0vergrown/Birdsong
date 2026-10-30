@@ -1,0 +1,41 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+logoFile="assets/birdsong/icon.png"
+authors="Overgrown"
+description='''
+Voice powers for Apoli: react to who is talking on Simple Voice Chat, how loudly and to whom, and turn spoken words into actions with offline speech recognition.
+'''
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="apoli"
+    type="required"
+    versionRange="${apoli_version_range}"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="voicechat"
+    type="optional"
+    versionRange="[0,)"
+    ordering="NONE"
+    side="BOTH"

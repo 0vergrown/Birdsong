@@ -1,5 +1,6 @@
 package dev.overgrown.birdsong.compat.voicechat;
 
+import de.maxhenkel.voicechat.api.ForgeVoicechatPlugin;
 import de.maxhenkel.voicechat.api.Position;
 import de.maxhenkel.voicechat.api.ServerPlayer;
 import de.maxhenkel.voicechat.api.VoicechatConnection;
@@ -21,6 +22,7 @@ import dev.overgrown.birdsong.voice.VoiceState;
 
 import java.util.UUID;
 
+@ForgeVoicechatPlugin
 public final class BirdsongVoicechatPlugin implements VoicechatPlugin {
 
     private volatile VoicechatServerApi api;
