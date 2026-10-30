@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "birdsong",
+  "version": "${version}",
+  "name": "Birdsong",
+  "description": "Voice powers for Apoli: react to who is talking on Simple Voice Chat, how loudly and to whom, and turn spoken words into actions with offline speech recognition.",
+  "authors": [
+    "Overgrown"
+  ],
+  "license": "The A/O License",
+  "icon": "assets/birdsong/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.overgrown.birdsong.Birdsong"
+    ],
+    "client": [
+      "dev.overgrown.birdsong.client.BirdsongClient"
+    ],
+    "voicechat": [
+      "dev.overgrown.birdsong.compat.voicechat.BirdsongVoicechatPlugin"
+    ],
+    "modmenu": [
+      "dev.overgrown.birdsong.compat.modmenu.BirdsongModMenu"
+    ]
+  },
+  "custom": {
+    "catalogue": {
+      "configFactory": "dev.overgrown.birdsong.compat.catalogue.CatalogueConfigFactory"
+    }
+  },
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*",
+    "apoli": ">=1.123.0"
+  },
+  "recommends": {
+    "voicechat": ">=2.6.0"
+  }
+}
