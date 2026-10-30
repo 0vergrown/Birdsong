@@ -8,7 +8,7 @@ public final class SpeechLanguage {
     private SpeechLanguage() {}
 
     public static String of(ServerPlayer player) {
-        return "en-US";
+        return toBcp47(player.clientInformation().language());
     }
 
     public static String toBcp47(String minecraftLanguage) {

@@ -2,10 +2,16 @@ package dev.overgrown.birdsong.network;
 
 import dev.overgrown.birdsong.Birdsong;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-public record SpeechTriggerC2S(ResourceLocation power) {
-    public static final ResourceLocation CHANNEL = Birdsong.id("speech_trigger");
+public record SpeechTriggerC2S(ResourceLocation power) implements CustomPacketPayload {
+    public static final Type<SpeechTriggerC2S> TYPE = new Type<>(Birdsong.id("speech_trigger"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, SpeechTriggerC2S> STREAM_CODEC = StreamCodec.of(
+        (buf, payload) -> payload.write(buf),
+        SpeechTriggerC2S::read);
 
     public void write(FriendlyByteBuf buf) {
         buf.writeResourceLocation(power);
@@ -13,5 +19,10 @@ public record SpeechTriggerC2S(ResourceLocation power) {
 
     public static SpeechTriggerC2S read(FriendlyByteBuf buf) {
         return new SpeechTriggerC2S(buf.readResourceLocation());
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

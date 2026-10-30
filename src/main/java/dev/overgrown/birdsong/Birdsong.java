@@ -9,9 +9,11 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,16 +24,17 @@ public final class Birdsong implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static ResourceLocation id(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     @Override
     public void onInitialize() {
         BirdsongTypes.register();
 
-        ServerPlayNetworking.registerGlobalReceiver(SpeechTriggerC2S.CHANNEL, (server, player, handler, buf, sender) -> {
-            SpeechTriggerC2S payload = SpeechTriggerC2S.read(buf);
-            server.execute(() -> ActionOnSpeechPower.fireTrigger(player, payload.power()));
+        PayloadTypeRegistry.playC2S().register(SpeechTriggerC2S.TYPE, SpeechTriggerC2S.STREAM_CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(SpeechTriggerC2S.TYPE, (payload, context) -> {
+            ServerPlayer sender = context.player();
+            context.server().execute(() -> ActionOnSpeechPower.fireTrigger(sender, payload.power()));
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
